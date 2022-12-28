@@ -1,0 +1,217 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Quản lý banner";
+    string error = TempData["error"] as string;
+}
+
+<h2 class="py-5">Cập nhật thông tin banner</h2>
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+
+<div class="row">
+    @if (Model.Id == 0)
+    {
+        <div class="col-md-8">
+            <form action="/admin/banner/AddOrUpdate" method="post">
+                <div class="form-group row">
+                    <label for="productname" class="col-sm-2 col-form-label">Tiêu đề banner:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="title" class="form-control" id="productname">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productslug" class="col-sm-2 col-form-label">Slug:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="slug" class="form-control" id="productslug">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productslug" class="col-sm-2 col-form-label">Mã phân loại đến:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="tocategoryid" class="form-control" id="producttocategory">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcontent" class="col-sm-2 col-form-label">Nội dung:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="content" class="form-control" id="productcontent">
+                    </div>
+                </div>
+                <div class="form-group row" style="display:flex">
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                    <div class="col-sm-12 pt-3">
+                        <a class="btn btn-primary" href="/admin/banner/index">Quay lại</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-8">
+            <form action="/admin/banner/AddOrUpdate" method="post">
+                <input type="text" name="imagepath" value="@Model.ImagePath" hidden/>
+                <div class="form-group row">
+                    <label for="productid" class="col-sm-2 col-form-label">Mã banner:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="id" class="form-control" value="@Model.Id" id="productid" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productname" class="col-sm-2 col-form-label">Tiêu đề banner:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="title" class="form-control" value="@Model.Title" id="productname">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productslug" class="col-sm-2 col-form-label">Slug:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="slug" class="form-control" value="@Model.Slug" id="productslug">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productslug" class="col-sm-2 col-form-label">Mã phân loại đến:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="tocategoryid" class="form-control" value="@Model.ToCategoryId" id="producttocategory">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcontent" class="col-sm-2 col-form-label">Nội dung:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="content" class="form-control" id="productcontent" value="@Model.Content">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcman" class="col-sm-2 col-form-label">Người tạo:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="createdby" class="form-control" id="productcman" value="@Model.CreatedBy" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcdate" class="col-sm-2 col-form-label">Ngày tạo:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="createdate" class="form-control" id="productcdate" value="@Model.CreateDate" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productuman" class="col-sm-2 col-form-label">Người cập nhật:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="updatedby" class="form-control" id="productuman" value="@Model.UpdatedBy" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productudate" class="col-sm-2 col-form-label">Ngày cập nhật:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="updatedate" class="form-control" id="productudate" value="@Model.UpdateDate" readonly>
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <label class="col-form-label col-sm-2 pt-0">Tình trạng sử dụng:</label>
+                        <div class="col-sm-10">
+                            @if (Model.Status == 1)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status1" value="1" checked>
+                                    <label class="form-check-label" for="status1">
+                                        Còn dùng
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status2" value="0">
+                                    <label class="form-check-label" for="status2">
+                                        Không dùng
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status1" value="1">
+                                    <label class="form-check-label" for="status1">
+                                        Còn dùng
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status2" value="0" checked>
+                                    <label class="form-check-label" for="status2">
+                                        Không dùng
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <label class="col-form-label col-sm-2 pt-0">Banner chính:</label>
+                        <div class="col-sm-10">
+                            @if (Model.Status == 0)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="BigImage" id="BigImage1" value="true" disabled>
+                                    <label class="form-check-label" for="BigImage1">
+                                        Có
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="BigImage" id="BigImage2" value="false" checked>
+                                    <label class="form-check-label" for="BigImage2">
+                                        Không
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                @if (Model.BigImage == true)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="BigImage" id="BigImage1" value="true" checked>
+                                        <label class="form-check-label" for="BigImage1">
+                                            Có
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="BigImage" id="BigImage2" value="false">
+                                        <label class="form-check-label" for="BigImage2">
+                                            Không
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="BigImage" id="BigImage1" value="true">
+                                        <label class="form-check-label" for="BigImage1">
+                                            Có
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="BigImage" id="BigImage2" value="false" checked>
+                                        <label class="form-check-label" for="BigImage2">
+                                            Không
+                                        </label>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row" style="display:flex">
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                    <div class="col-sm-12 pt-3">
+                        <a class="btn btn-primary" href="/admin/banner/index">Quay lại</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+
+</div>

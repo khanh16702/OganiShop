@@ -1,0 +1,220 @@
+﻿@using AppManager.Areas.Admin.Models
+@model ProductViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard";
+    string error = TempData["error"] as string;
+    var pageNumber = (int)ViewBag.pageNumber;
+}
+
+<h2 class="py-5">Cập nhật thông tin sản phẩm</h2>
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+<div class="row">
+    @if (Model.Id == 0)
+    {
+        <div class="col-md-8">
+            <form action="/admin/product/AddOrUpdate?pageNumber=@pageNumber" method="post">
+                <div class="form-group row">
+                    <label for="productname" class="col-sm-2 col-form-label">Tên sản phẩm:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="name" class="form-control" id="productname">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productOldPrice" class="col-sm-2 col-form-label">Giá cũ:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="OldPrice" class="form-control" id="productOldPrice" value="0" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productPrice" class="col-sm-2 col-form-label">Giá bán:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="price" class="form-control" id="productPrice">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productquantity" class="col-sm-2 col-form-label">Số lượng:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="quantity" class="form-control" id="productquantity">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productweight" class="col-sm-2 col-form-label">Trọng lượng:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="weight" class="form-control" id="productweight">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productunit" class="col-sm-2 col-form-label">Đơn vị:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="unit" class="form-control" id="productunit">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcategory" class="col-sm-2 col-form-label">Mã phân loại:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="categoryid" class="form-control" id="productcategory">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productdescription" class="col-sm-2 col-form-label">Mô tả:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="description" class="form-control" id="productdescription">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productsummary" class="col-sm-2 col-form-label">Tóm tắt:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="summarycontent" class="form-control" id="productsummary">
+                    </div>
+                </div>
+                <div class="form-group row" style="display:flex">
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                    <div class="col-sm-12 pt-3">
+                        <a class="btn btn-primary" href="/admin/product/index?pageNumber=@pageNumber">Quay lại</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-8">
+            <form action="/admin/product/AddOrUpdate?pageNumber=@pageNumber" method="post">
+                <input type="text" name="imagepath" value="@Model.ImagePath" hidden/>
+                <div class="form-group row">
+                    <label for="productid" class="col-sm-2 col-form-label">Mã sản phẩm:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="id" class="form-control" id="productid" value="@Model.Id" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productname" class="col-sm-2 col-form-label">Tên sản phẩm:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="name" class="form-control" id="productname" value="@Model.Name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productOldPrice" class="col-sm-2 col-form-label">Giá cũ:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="OldPrice" class="form-control" id="productOldPrice" value="@Model.Price" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productPrice" class="col-sm-2 col-form-label">Giá bán:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="price" class="form-control" id="productPrice" value="@Model.Price">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productquantity" class="col-sm-2 col-form-label">Số lượng:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="quantity" class="form-control" id="productquantity" value="@Model.Quantity">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productweight" class="col-sm-2 col-form-label">Trọng lượng:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="weight" class="form-control" id="productweight" value="@Model.Weight">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productunit" class="col-sm-2 col-form-label">Đơn vị:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="unit" class="form-control" id="productunit" value="@Model.Unit">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcategory" class="col-sm-2 col-form-label">Mã phân loại:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="categoryid" class="form-control" id="productcategory" value="@Model.CategoryId">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productdescription" class="col-sm-2 col-form-label">Mô tả:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="description" class="form-control" id="productdescription" value="@Model.Description">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productsummary" class="col-sm-2 col-form-label">Tóm tắt:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="summarycontent" class="form-control" id="productsummary" value="@Model.SummaryContent">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcreator" class="col-sm-2 col-form-label">Người tạo:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="createdby" class="form-control" id="productcreator" value="@Model.CreatedBy" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productCreateDate" class="col-sm-2 col-form-label">Ngày tạo:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="CreateDate" class="form-control" id="productCreateDate" value="@Model.CreateDate" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productcreator" class="col-sm-2 col-form-label">Người cập nhật:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="updatedby" class="form-control" id="productcreator" value="@TempData["User"]" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="productUpdateDate" class="col-sm-2 col-form-label">Ngày cập nhật:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="UpdateDate" class="form-control" id="productUpdateDate" value="@Model.UpdateDate" readonly>
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <label class="col-form-label col-sm-2 pt-0">Tình trạng bán:</label>
+                        <div class="col-sm-10">
+                            @if (Model.Status == 1)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status1" value="1" checked>
+                                    <label class="form-check-label" for="status1">
+                                        Còn bán
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status2" value="0">
+                                    <label class="form-check-label" for="status2">
+                                        Không bán
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status1" value="1">
+                                    <label class="form-check-label" for="status1">
+                                        Còn bán
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="status2" value="0" checked>
+                                    <label class="form-check-label" for="status2">
+                                        Không bán
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row">
+                    <div class="col-sm-12 pt-3">
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+
+</div>

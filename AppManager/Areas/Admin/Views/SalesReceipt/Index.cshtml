@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Quản lý hóa đơn bán";
+    var stt = 1;
+}
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 class="py-5">Danh sách hóa đơn bán</h2>
+    <a href="/admin/home/index" class="btn btn-warning" style="height:50%">Trở về</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã hóa đơn</th>
+            <th>Ngày tạo</th>
+            <th>Mã khách hàng</th>
+            <th>Khuyến mãi</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@item.Id</td>
+                            <td>@item.CreateDate</td>
+                            <td>@item.CustomerId</td>
+                            <td>@item.Discount</td>
+                            <td>
+                                <a href="/admin/SalesReceipt/SalesReceiptDetails?id=@item.Id" class="btn btn-primary" style="color:white">Chi tiết</a>
+                            </td>
+                        </tr>
+                stt++;
+            }
+        }
+
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        function clickPage(pageNumber) {
+            document.getElementById("txtPageNumber").value = pageNumber;
+            document.getElementById("formSearch").submit();
+        }
+    </script>
+}   

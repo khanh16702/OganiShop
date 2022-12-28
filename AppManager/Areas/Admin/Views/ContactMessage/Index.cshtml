@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Quản lý thư liên hệ";
+    var stt = 1;
+}
+
+<h2 class="py-5">Danh sách thư</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã thư</th>
+            <th>Tên người gửi</th>
+            <th>Email</th>
+            <th>Nội dung</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@stt</td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Message</td>
+                </tr>
+                stt++;
+            }
+        }
+
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        function clickPage(pageNumber) {
+            document.getElementById("txtPageNumber").value = pageNumber;
+            document.getElementById("formSearch").submit();
+        }
+    </script>
+}   

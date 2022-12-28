@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Quản lý chi tiết hóa đơn bán";
+    var stt = 1;
+}
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 class="py-5">Chi tiết hóa đơn bán</h2>
+    <a href="/admin/salesreceipt/index" class="btn btn-warning" style="height:50%">Trở về</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã hóa đơn</th>
+            <th>Mã sản phẩm</th>
+            <th>Số lượng bán</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@stt</td>
+                    <td>@item.SalesReceiptId</td>
+                    <td>@item.ProductId</td>
+                    <td>@item.SellQuantity</td>
+                </tr>
+                stt++;
+            }
+        }
+
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        function clickPage(pageNumber) {
+            document.getElementById("txtPageNumber").value = pageNumber;
+            document.getElementById("formSearch").submit();
+        }
+    </script>
+}   

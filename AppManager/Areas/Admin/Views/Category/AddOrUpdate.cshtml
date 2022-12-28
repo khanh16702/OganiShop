@@ -1,0 +1,146 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Cập nhật danh mục";
+    string error = TempData["error"] as string;
+}
+
+<h2 class="py-5">Cập nhật danh mục sản phẩm</h2>
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+
+
+<div class="col-md-8">
+    @if (Model.Id == 0)
+    {
+        <div class="box">
+            <div class="box-body">
+                <form action="/admin/category/AddOrUpdate" method="post">
+                    <div class="form-group">
+                        <label>Tên danh mục</label>
+                        <input type="text" name="name" value="" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <input type="text" name="description" value="" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        @*<button class="btn btn-primary btn-addOrUpdate">Thêm mới</button>*@
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                        <a href="/admin/category/index" class="btn btn-warning">Trở về</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="box">
+            <div class="box-body">
+                <form action="/admin/category/AddOrUpdate" method="post">
+                    <input type="text" name="imagepath" value="@Model.ImagePath" class="form-control" readonly hidden/>
+                    <div class="form-group">
+                        <label>Mã danh mục:</label>
+                        <input type="text" name="id" value="@Model.Id" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Tên danh mục:</label>
+                        <input type="text" name="name" value="@Model.Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả:</label>
+                        <input type="text" name="description" value="@Model.Description" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày tạo:</label>
+                        <input type="text" name="createdate" value="@Model.CreateDate" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Người tạo:</label>
+                        <input type="text" name="createdby" value="@Model.CreatedBy" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày cập nhật:</label>
+                        <input type="text" name="updatedate" value="@Model.UpdateDate" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Người cập nhật:</label>
+                        <input type="text" name="updatedby" value="@Model.UpdatedBy" class="form-control" readonly />
+                    </div>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <label class="col-form-label col-sm-2 pt-0">Tình trạng dùng:</label>
+                            <div class="col-sm-10">
+                                @if (Model.Status == 1)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="status1" value="1" checked>
+                                        <label class="form-check-label" for="status1">
+                                            Còn dùng
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="status2" value="0">
+                                        <label class="form-check-label" for="status2">
+                                            Không dùng
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="status1" value="1">
+                                        <label class="form-check-label" for="status1">
+                                            Còn dùng
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="status2" value="0" checked>
+                                        <label class="form-check-label" for="status2">
+                                            Không dùng
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        @*<button class="btn btn-primary btn-addOrUpdate">Cập nhật</button>*@
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a href="/admin/category/index" class="btn btn-warning">Trở về</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    <script>
+        $('.btn-addOrUpdate').click(function () {
+            let obj = {};
+            obj.name = $('input[name="name"]').val();
+            obj.description = $('input[name="description"]').val();
+            $.ajax({
+                url: "/admin/category/AddOrUpdate",
+                type: "POST",
+                datatype: "json",
+                contentType: "application/json",
+                data: JSON.stringify(obj),
+                beforeSend: function () {
+
+                },
+                success: function () {
+
+                },
+                error: error => {
+                    console.log(error);
+                }
+            });
+        });
+
+
+    </script>
+}

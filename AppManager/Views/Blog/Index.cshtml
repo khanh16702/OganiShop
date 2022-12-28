@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "Blog";
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Blog</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/Home/Index">Home</a>
+                        <span>Blog</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Blog Section Begin -->
+<section class="blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__search">
+                        <form action="/blog/index">
+                            <input type="text" name="title" value="@ViewBag.Name" placeholder="Search...">
+                            <input type="text" name="categoryId" value="@ViewBag.CategoryId" hidden/>
+                            <input type="text" name="tag" value="@ViewBag.Tag" hidden />
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Categories</h4>
+                        <ul id="blog-categories">
+                            
+                        </ul>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Recent News</h4>
+                        <div class="blog__sidebar__recent" id="recent-news">
+                            
+                        </div>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Search By</h4>
+                        <div class="blog__sidebar__item__tags" id="blog-tags">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-7">
+                <div class="row" id="get-blog">
+                    
+                    @*<div class="col-lg-12">
+                        <div class="product__pagination blog__pagination">
+                            <a href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+@section Scripts {
+    <script>
+        $.ajax({
+            url: "/Blog/GetBlogCategories",
+            type: "GET",
+            dataType: "json",
+            beforeSend: function () {
+
+            },
+            success: function (data) {
+                $('#blog-categories').html('');
+                $('#blog-categories').append(`<li><a href="/blog/index?categoryId=0&title=@ViewBag.Name&tag=@ViewBag.Tag"">All</a></li>`);
+                data.forEach(function (item, index) {
+                    let row = `<li><a href="/blog/index?categoryId=${item.id}&title=@ViewBag.Name&tag=@ViewBag.Tag">${item.name} (${item.numberOfPost})</a></li>`;
+                    $('#blog-categories').append(row);
+                });
+            },
+            error: function (error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+
+        $.ajax({
+            url: "/Blog/GetBlogs?categoryId=" + @ViewBag.CategoryId + "&title=" + "@ViewBag.Name" + "&tag=" + "@ViewBag.Tag",
+            type: "GET",
+            dataType: "json",
+            beforeSend: function () {
+
+            },
+            success: function (data) {
+                $('#get-blog').html('');
+                data.forEach(function (item, index) {
+                    let row = `<div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__item">
+                                    <div class="blog__item__pic">
+                                        <img src="${item.imagePath}" style="height:256px" alt="">
+                                    </div>
+                                    <div class="blog__item__text">
+                                        <ul>
+                                            <li><i class="fa fa-calendar-o"></i> ${item.customDate}</li>
+                                            <li><i class="fa fa-comment-o"></i> ${item.comments}</li>
+                                        </ul>
+                                        <h5><a href="/blog/blogdetails?blogid=${item.id}">${item.title}</a></h5>
+                                        <p>
+                                            ${item.summary}
+                                        </p>
+                                        <a href="/blog/blogdetails?blogid=${item.id}" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    $('#get-blog').append(row);
+                });
+            },
+            error: function (error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+
+        $.ajax({
+            url: "/Blog/GetRecentNews",
+            type: "GET",
+            dataType: "json",
+            beforeSend: function () {
+
+            },
+            success: function (data) {
+                $('#recent-news').html('');
+                var count = 0;
+                data.forEach(function (item, index) {
+                    if (count == 3) 
+                        return;
+                    let row = `<a href="/blog/blogdetails?blogId=${item.id}" class="blog__sidebar__recent__item">
+                                        <div class="blog__sidebar__recent__item__pic">
+                                            <img src="${item.imagePath}" style="width:70px; height:60px;" alt="">
+                                        </div>
+                                        <div class="blog__sidebar__recent__item__text">
+                                            <h6>${item.title}</h6>
+                                            <span>${item.customDate}</span>
+                                        </div>
+                                    </a>`;
+                    $('#recent-news').append(row);
+                    count += 1;
+                });
+            },
+            error: function (error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+
+        $.ajax({
+            url: "/Blog/GetBlogTags",
+            type: "GET",
+            dataType: "json",
+            beforeSend: function () {
+
+            },
+            success: function (data) {
+                $('#blog-tags').html('');
+                data.forEach(function (item, index) {
+                    let row = `<a href="/blog/index?tag=${item.name}&categoryId=@ViewBag.CategoryId&title=@ViewBag.Name">${item.name}</a>`;
+                    $('#blog-tags').append(row);
+                });
+            },
+            error: function (error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+    </script>
+}

@@ -1,0 +1,145 @@
+﻿@using AppManager.Areas.Admin.Models
+@model List<CategoryImageModel>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Image";
+    var avatar = ViewBag.categoryAvatar;
+}
+
+<div class="box box-info">
+    <div class="box-header">
+        <h3>Quản lý ảnh danh mục</h3>
+        <a href="/admin/category/index" class="btn btn-warning">Quay về trang danh mục</a>
+    </div>
+    <div class="container">
+        <div class="row" style="overflow:hidden">
+            <div class="col-md-6">
+                <form class="form-horizontal" action="/Admin/Category/UpdateCategoryAvatar" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="control-label">Avatar:</label>
+                            <input type="text" name="categoryid" value="@ViewBag.catId" hidden>
+                            <input type="text" name="id" id="cat-avatar-id" value="@avatar.Id" hidden>
+                            <input type="text" id="cat-delete-id" value="-1" hidden />
+                            <div class="text-center">
+                                <img src="@avatar.FilePath" id="cat-image-avatar" class="rounded mx-auto d-block" style="width: 256px" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-top: 1rem; padding-bottom: 1rem">
+                            <i>Chọn một trong những ảnh dưới đây đặt làm ảnh đại diện cho danh mục</i>
+                        </div>
+                        <div class="form-group text-center">
+                            @{
+                                foreach (var item in Model)
+                                {
+                                            <div class="col-sm-3">
+                                                <img src="@item.FilePath" id="@item.Id" class="cat-list-image rounded mx-auto d-block" style="width: 128px" />
+                                            </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-danger pull-right" id="cat-deleteBtn" style="margin-left: 10px">Xóa</button>
+                        <button type="submit" class="btn btn-primary pull-right" id="cat-update-avatar">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <form class="form-horizontal" action="/Admin/Category/UpdateCategoryImage" method="post">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input type="text" name="categoryid" value="@ViewBag.catId" hidden>
+                                <input type="text" id="image-file-path" name="filePath" hidden>
+                                <input type="text" id="image-file-id" name="fileId" hidden>
+                                <input type="text" id="image-name" name="name" hidden />
+                                <label class="control-label" for="exampleInputPassword1">Upload ảnh</label>
+                                <div class="col-md-12 text-center">
+                                    <img src="/img/default.jpg" id="image-upload" class="rounded mx-auto d-block" style="width: 256px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="file" name="fileUpload" id="exampleInputFile">
+                                <i class="help-block">Upload ảnh của sản phẩm</i>
+                            </div>
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary pull-right">Thêm ảnh</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+        <script>
+            $('.cat-list-image').click(function () {
+                $('#cat-image-avatar').attr("src", $(this).attr("src"));
+                $('#cat-avatar-id').val($(this).attr("id"));
+                $('#cat-delete-id').val($(this).attr("id"));
+            });
+
+            $('#cat-update-avatar').click(function () {
+                alert("Thay đổi ảnh đại diện của danh mục thành công!");
+            });
+
+            $(document).on('click', 'button[id="cat-deleteBtn"]', function () {
+                let deleteId = $('#cat-delete-id').val();
+                $.ajax({
+                    url: "/admin/category/deleteimage?id=" + deleteId,
+                    type: "POST",
+                    data: '',
+                    contentType: false,
+                    processData: false,
+                    beforeSend: () => {
+
+                    },
+                    success: res => {
+                        if (res.status == 'success') {
+                            alert("Xóa ảnh thành công!");
+                            location.reload();
+                        }
+                        else {
+                            alert("Error!");
+                        }
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                })
+            });
+
+            $(document).on('change', 'input[name="fileUpload"]', function () {
+                let files = $(this).prop("files");
+                let formData = new FormData();
+                formData.append("file", files[0]);
+                $.ajax({
+                    url: "/admin/category/uploadfile",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: () => {
+
+                    },
+                    success: res => {
+                        if (res.status == 'success') {
+                            $('#image-upload').attr('src', res.fileInfo.filePath);
+                            $('#image-file-path').val(res.fileInfo.filePath);
+                            $('#image-file-id').val(res.fileInfo.id);
+                            $('#image-name').val(res.fileInfo.Name)
+                        }
+                        else {
+                            alert("Error!");
+                        }
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                })
+            });
+        </script>
+}

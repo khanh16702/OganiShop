@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard";
+    string error = TempData["error"] as string;
+    var pageNumber = (int)ViewBag.pageNumber;
+}
+
+<h2 class="py-5">Thêm mới mã giảm giá</h2>
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form action="/admin/discountcode/AddOrUpdate?pageNumber=@pageNumber" method="post">
+            <div class="form-group row">
+                <label for="productname" class="col-sm-2 col-form-label">Tên mã:</label>
+                <div class="col-sm-10">
+                    <input type="text" name="name" class="form-control" id="productname">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="productreduce" class="col-sm-2 col-form-label">Số tiền giảm:</label>
+                <div class="col-sm-10">
+                    <input type="text" name="reducedamount" class="form-control" id="productreduce">
+                </div>
+            </div>
+            <div class="form-group row" style="display:flex">
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+                <div class="col-sm-12 pt-3">
+                    <a class="btn btn-warning" href="/admin/discountcode/index?pageNumber=@pageNumber">Quay lại</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
