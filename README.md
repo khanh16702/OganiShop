@@ -4,6 +4,8 @@ Trang khách hàng được lấy template từ Colorlib: https://colorlib.com/w
 
 Trang admin được lấy template từ https://adminlte.io/
 
+Số dòng code (tác động lên dự án): 11.726
+
 # Chức năng
 
 * Bày bán sản phẩm, lọc sản phẩm
