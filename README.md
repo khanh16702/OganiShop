@@ -8,6 +8,7 @@ Số dòng code (tác động lên dự án): 11.726
 
 # Hướng dẫn chạy
 * Chạy code trong file oganishopdb.sql trên SQL Server Management Studio
+* Cấu hình lại đường dẫn và tên database trong appsettings.json
 * Chạy AppManager.sln
 
 # Chức năng
