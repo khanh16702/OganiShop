@@ -6,6 +6,10 @@ Trang admin được lấy template từ https://adminlte.io/
 
 Số dòng code (tác động lên dự án): 11.726
 
+# Hướng dẫn chạy
+* Chạy code trong file oganishopdb.sql trên SQL Server Management Studio
+* Chạy AppManager.sln
+
 # Chức năng
 
 * Bày bán sản phẩm, lọc sản phẩm
